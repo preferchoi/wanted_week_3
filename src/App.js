@@ -9,6 +9,11 @@ const App = () => {
 
     const cancelToken = useRef(null);
 
+    const containsOnlyConsonantsOrVowels = (str) => {
+        const regex = /([ㄱ-ㅎ]+|[ㅏ-ㅣ]+)/g;
+        return regex.test(str);
+    };
+
     const handleInputChange = async (e) => {
         const value = e.target.value;
         setInputValue(value);
@@ -18,7 +23,7 @@ const App = () => {
         }
         cancelToken.current = axios.CancelToken.source();
 
-        if (value.trim() !== '') {
+        if (value.trim() !== '' && !containsOnlyConsonantsOrVowels(value)) {
             const cacheKey = `sick-${value}`;
             const cachedData = localStorage.getItem(cacheKey);
 
@@ -64,7 +69,6 @@ const App = () => {
                 if (selectedIndex >= 0) {
                     const selectedValue = recommend[selectedIndex].sickNm;
                     setInputValue(selectedValue);
-                    // 여기에 API 호출 로직 등을 넣을 수 있습니다.
                 }
                 break;
             default:
